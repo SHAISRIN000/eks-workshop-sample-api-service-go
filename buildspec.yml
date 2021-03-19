@@ -14,7 +14,7 @@ phases:
         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
         - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' hello-k8s.yml
         - echo Logging in to Amazon ECR...
-        - aws ecr get-login-password --region us-east-1
+        - aws ecr get-login-password --region us-east-1 |  docker login --username AWS --password-stdin $REPOSITORY_URI
         - export KUBECONFIG=$HOME/.kube/config
   build:
     commands:
